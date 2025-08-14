@@ -1,20 +1,23 @@
-import express from "express";
-import fetch from "node-fetch";
-import cors from "cors";
+const response = await fetch(
+  `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-pro:generateContent?key=${process.env.GEMINI_API_KEY}`,
+  {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  }
+);
 
-const app = express();
+console.log("📡 Gemini status:", response.status, response.statusText);
 
-// Разрешаем доступ из браузера (для Janitor)
-app.use(cors());
-app.use(express.json());
+const text = await response.text();
+console.log("📥 Raw Gemini response:", text);
 
-app.post("/chat", async (req, res) => {
-  try {
-    const { messages, temperature } = req.body;
+let data;
+try {
+  data = JSON.parse(text);
+} catch (err) {
+  console.error("❌ JSON parse error:", err);
+  return res.status(500).json({ error: "Invalid JSON from Gemini" });
+}
 
-    if (!messages || !Array.isArray(messages)) {
-      return res.status(400).json({ error: "messages must be an array" });
-    }
-
-    // Собираем все пользовательские сообщения в один текст
-    const userMessages = messag
+res.json(data);
