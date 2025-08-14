@@ -1,13 +1,14 @@
 {
   "name": "gemini-proxy",
   "version": "1.0.0",
-  "description": "Proxy server to convert OpenAI-style messages to Google Gemini format",
+  "description": "Proxy server to convert OpenAI-style requests to Google Gemini API",
   "type": "module",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
     "express": "^4.19.2",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "cors": "^2.8.5"
   }
 }
